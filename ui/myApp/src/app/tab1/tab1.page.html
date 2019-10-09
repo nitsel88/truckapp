@@ -12,17 +12,32 @@
         <ion-card-title>Orders to pickup</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        No orders available to take up 
+           <ion-item-group *ngFor="let order of orders">
+              <ion-button expand="full"  fill="solid"  (click)="buttonClick()">
+                  <ion-ripple-effect></ion-ripple-effect>
+                  {{order.orderDesc}} | {{order.pickUpDest.area}} => {{order.dropDest.area}}
+              </ion-button>  
+           </ion-item-group>
+           
+   
       </ion-card-content>
     </ion-card>
-    <ion-card class="welcome-card">
+    <ion-card >
 
       <ion-card-header>
         <ion-card-title> Press mic icon and speak</ion-card-title>
       </ion-card-header>
 
       <ion-card-content>
-        <img src="/assets/mic.jpg" alt="" />
+          <ion-row>
+            <ion-col style="text-align: center">
+                <ion-button color="medium" shape="round" class="micbtn" >
+                    <ion-ripple-effect></ion-ripple-effect>
+                    <ion-icon  class="micicon" name="mic"></ion-icon>
+              </ion-button>
+            </ion-col>
+
+        </ion-row>
       </ion-card-content>
 
     </ion-card>
