@@ -1,8 +1,28 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
-      Orders
-    </ion-title>
+      <ion-row>
+   <ion-col >
+    <ion-item>
+            <ion-title style="text-align: left; padding-left: 1px;" size="large">
+                Orders
+            </ion-title>       
+    </ion-item>
+    </ion-col>
+    <ion-col >
+      <ion-item>
+          <ion-label>Dark mode</ion-label>
+          <ion-toggle [(ngModel)]="darkmode" slot="start" name="darkmode" color="medium"></ion-toggle>
+      </ion-item>
+
+    </ion-col>
+  </ion-row>
+  <ion-row>
+      <ion-col >
+      <ion-item>
+        Welcome User
+      </ion-item>
+    </ion-col>
+    </ion-row>
   </ion-toolbar>
 </ion-header>
 
@@ -13,7 +33,7 @@
       </ion-card-header>
       <ion-card-content>
            <ion-item-group *ngFor="let order of orders">
-              <ion-button expand="full"  fill="solid"  (click)="buttonClick()">
+              <ion-button expand="full"  fill="solid"  (click)="test()">
                   <ion-ripple-effect></ion-ripple-effect>
                   {{order.orderDesc}} | {{order.pickUpDest.area}} => {{order.dropDest.area}}
               </ion-button>  
@@ -25,20 +45,27 @@
     <ion-card >
 
       <ion-card-header>
+        
         <ion-card-title> Press mic icon and speak</ion-card-title>
       </ion-card-header>
 
       <ion-card-content>
           <ion-row>
             <ion-col style="text-align: center">
-                <ion-button color="medium" shape="round" class="micbtn" >
+                <ion-button [disabled]="recording" [color]="buttoncolor" shape="round" class="micbtn" tappable (click)="voiceCommand()" >
                     <ion-ripple-effect></ion-ripple-effect>
                     <ion-icon  class="micicon" name="mic"></ion-icon>
               </ion-button>
             </ion-col>
-
         </ion-row>
       </ion-card-content>
 
     </ion-card>
+
+    <ion-item-group *ngFor="let match of matches">
+        <ion-item  color="success">
+            <ion-label>{{match}}</ion-label>
+        </ion-item>  
+     </ion-item-group>
+     
 </ion-content>

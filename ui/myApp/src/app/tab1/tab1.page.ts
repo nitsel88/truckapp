@@ -1,29 +1,81 @@
-import { Component } from '@angular/core';
-import { map } from 'rxjs/operators';
+import {Component, NgZone} from '@angular/core';
+import { SpeechRecognition } from '@ionic-native/speech-recognition/ngx';
 import { Order } from '../models/order';
 import {OrderService} from '../services/order/order.service';
+
+const MEDIA_FILES_KEY = 'recordings';
+
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
-
-  orders:Order[];
-  constructor(private orderService:OrderService) {}
+  available:boolean = false
+  hasPermission:boolean = false
+  recording:boolean = false
+  buttoncolor:string = "medium"
+  matches:string[] = []
+  orders:Order[]
+  options = {
+    language:"en-US",
+    matches:5,
+    prompt:"Hello driver, Say Something",      // Android only
+    showPopup:false,  // Android only
+    showPartial:false 
+  }
+  constructor(private zone:NgZone, private orderService:OrderService, private speechRecognition: SpeechRecognition) {}
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
-    this.getOrders();
+    this.getOrders()
   }
 
-  getOrders() {
-     // this.orderService.getOrders().pipe(map(res => this.orders = res))
+  ionViewDidLoad() {
 
+  }
+
+  voiceCommand() {
+  this.speechRecognition.isRecognitionAvailable()
+  .then((available: boolean) => {
+    this.available = available
+
+    this.speechRecognition.requestPermission()
+    .then(() =>  {
+      this.recording = true
+      this.buttoncolor = "danger"
+      this.speechRecognition.startListening(this.options).subscribe(
+        (matches) => {
+          this.zone.run(()=>{
+            this.recording = false
+            this.buttoncolor = "medium"
+            this.matches = matches
+          })
+       },
+       (onerror) => { 
+        this.zone.run(()=>{
+          console.log('error:', onerror) 
+          this.recording = false
+          this.buttoncolor = "medium"
+          this.matches.length = 0
+          this.matches.push("Talk Again - not proper") 
+        })
+       },
+       () => {
+        this.recording = false
+        this.buttoncolor = "medium"
+       }
+      )
+    },
+    () => console.log('Permission Denied')
+  )
+  })
+  }
+ 
+  getOrders() {
      this.orderService.getOrders().subscribe((data)=> {
-      this.orders = data;
+      this.orders = data
      })
     }
-
 }

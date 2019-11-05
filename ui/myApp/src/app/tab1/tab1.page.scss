@@ -17,3 +17,23 @@ ion-button {
   width: 100px;
   height: 100px;
 }
+
+@media (prefers-color-scheme: light) {
+  ion-toolbar {
+    --background: white;
+    color: black;
+  }
+  .verticalScrollContainer {
+    background: white;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  ion-toolbar {
+    --background: black;
+    color: white;
+  }
+  .verticalScrollContainer {
+    background: black;
+  }
+}
