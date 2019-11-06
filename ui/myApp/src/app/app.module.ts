@@ -18,16 +18,25 @@ import { UserService } from './services/user/user.service';
 import { DriverService } from './services/driver/driver.service';
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,  HttpClientModule, IonicStorageModule.forRoot()],
-  providers: [
-    StatusBar,
-    SpeechRecognition,
-    SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    OrderService, UserService, DriverService
-  ],
-  bootstrap: [AppComponent]
+   declarations: [
+      AppComponent,
+   ],
+   entryComponents: [],
+   imports: [
+      BrowserModule,
+      IonicModule.forRoot(),
+      AppRoutingModule,
+      HttpClientModule,
+      IonicStorageModule.forRoot()
+   ],
+   providers: [
+      StatusBar,
+      SpeechRecognition,
+      SplashScreen,
+      
+   ],
+   bootstrap: [
+      AppComponent
+   ]
 })
 export class AppModule {}

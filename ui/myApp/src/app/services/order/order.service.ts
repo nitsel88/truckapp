@@ -13,4 +13,9 @@ constructor(private http: HttpClient) { }
 getOrders() {
   return this.http.get<Order[]>(`${Config.url}/orders`);
  }
+
+ 
+getOrderForOrderId(ordId) {
+  return this.http.get<Order>(`${Config.url}/orders/${ordId}`);
+ }
 }

@@ -13,7 +13,6 @@
           <ion-label>Dark mode</ion-label>
           <ion-toggle [(ngModel)]="darkmode" slot="start" name="darkmode" color="medium"></ion-toggle>
       </ion-item>
-
     </ion-col>
   </ion-row>
   <ion-row>
@@ -29,16 +28,15 @@
 <ion-content>
     <ion-card class="welcome-card">
       <ion-card-header>
-        <ion-card-title>Orders to pickup</ion-card-title>
+        <ion-card-title>Assigned Order</ion-card-title>
       </ion-card-header>
       <ion-card-content>
            <ion-item-group *ngFor="let order of orders">
-              <ion-button expand="full"  fill="solid"  (click)="test()">
+              <ion-button expand="full" [color]="orderButtonColor"  fill="solid"  (click)="selectOrder(order)">
                   <ion-ripple-effect></ion-ripple-effect>
-                  {{order.orderDesc}} | {{order.pickUpDest.area}} => {{order.dropDest.area}}
+                  {{order.orderId}} | {{order.orderDesc}} | {{order.pickUpDest.area}} => {{order.dropDest.area}}
               </ion-button>  
-           </ion-item-group>
-           
+           </ion-item-group>          
    
       </ion-card-content>
     </ion-card>

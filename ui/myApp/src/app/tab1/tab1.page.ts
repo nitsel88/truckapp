@@ -15,8 +15,10 @@ export class Tab1Page {
   hasPermission:boolean = false
   recording:boolean = false
   buttoncolor:string = "medium"
+  orderButtonColor:String = "primary"
   matches:string[] = []
   orders:Order[]
+  selectedOrder:Order
   options = {
     language:"en-US",
     matches:5,
@@ -73,9 +75,37 @@ export class Tab1Page {
   })
   }
  
+  setButtonColor(order) {
+    if (order.status == "accepted") {
+      this.orderButtonColor = "success"
+    } else if (order.status == "picked") {
+      this.orderButtonColor = "warning"
+    } else {
+      this.orderButtonColor = "primary"
+    }
+  }
+
   getOrders() {
      this.orderService.getOrders().subscribe((data)=> {
       this.orders = data
      })
     }
+
+    selectOrder(order) {
+      if (order.status == "accepted") {
+         this.pickUpOrder(order)
+      } else if (order.status == "open") {
+        order.status = "accepted"
+        order.driverId = "1"
+        this.setButtonColor(order)
+      }           
+    }
+
+    
+    pickUpOrder(order) {
+      order.status = "picked"
+      this.setButtonColor(order)
+    }
+
+    
 }
