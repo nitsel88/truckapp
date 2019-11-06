@@ -22,6 +22,7 @@
     "@angular/router": "~8.1.2",
     "@ionic-native/core": "^5.0.0",
     "@ionic-native/file": "^5.15.1",
+    "@ionic-native/http": "^5.16.0",
     "@ionic-native/media": "^5.15.1",
     "@ionic-native/media-capture": "^5.15.1",
     "@ionic-native/speech-recognition": "^5.15.1",
@@ -31,6 +32,7 @@
     "@ionic/storage": "^2.2.0",
     "cordova": "^9.0.0",
     "cordova-android": "^8.1.0",
+    "cordova-plugin-advanced-http": "^2.2.0",
     "cordova-plugin-speechrecognition": "^1.2.0",
     "core-js": "^2.5.4",
     "rxjs": "~6.5.1",
@@ -84,7 +86,10 @@
       "cordova-plugin-media-capture": {},
       "cordova-plugin-media": {},
       "cordova-plugin-file": {},
-      "cordova-plugin-speechrecognition": {}
+      "cordova-plugin-speechrecognition": {},
+      "cordova-plugin-advanced-http": {
+        "OKHTTP_VERSION": "3.10.0"
+      }
     },
     "platforms": [
       "android"
