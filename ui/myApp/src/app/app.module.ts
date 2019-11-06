@@ -9,6 +9,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { SpeechRecognition } from '@ionic-native/speech-recognition/ngx';
+import { TextToSpeech } from '@ionic-native/text-to-speech/ngx';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -32,6 +33,7 @@ import { DriverService } from './services/driver/driver.service';
    providers: [
       StatusBar,
       SpeechRecognition,
+      TextToSpeech,
       SplashScreen,
       
    ],

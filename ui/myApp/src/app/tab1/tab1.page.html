@@ -31,10 +31,10 @@
         <ion-card-title>Assigned Order</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-           <ion-item-group *ngFor="let order of orders">
-              <ion-button expand="full" [color]="orderButtonColor"  fill="solid"  (click)="selectOrder(order)">
+           <ion-item-group >
+              <ion-button  *ngIf="order.status != 'delivered'" expand="full" [color]="orderButtonColor"  fill="solid" tappable (click)="selectOrder(order)">
                   <ion-ripple-effect></ion-ripple-effect>
-                  {{order.orderId}} | {{order.orderDesc}} | {{order.pickUpDest.area}} => {{order.dropDest.area}}
+                   {{order.orderDesc}} | {{order.pickUpDest.area}} => {{order.dropDest.area}}
               </ion-button>  
            </ion-item-group>          
    

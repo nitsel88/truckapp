@@ -18,4 +18,8 @@ getOrders() {
 getOrderForOrderId(ordId) {
   return this.http.get<Order>(`${Config.url}/orders/${ordId}`);
  }
+
+ updateOrder(order) {
+  return this.http.put(`${Config.url}/orders/`, order);
+ }
 }

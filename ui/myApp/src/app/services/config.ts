@@ -1,4 +1,4 @@
 export class Config {
-  static url:string = "http://35.193.152.127:3001";
+  static url:string = "http://localhost:3001";
 }
 

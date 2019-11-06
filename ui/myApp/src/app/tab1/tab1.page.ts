@@ -1,5 +1,6 @@
 import {Component, NgZone} from '@angular/core';
 import { SpeechRecognition } from '@ionic-native/speech-recognition/ngx';
+import { TextToSpeech } from '@ionic-native/text-to-speech/ngx';
 import { Order } from '../models/order';
 import {OrderService} from '../services/order/order.service';
 
@@ -17,8 +18,14 @@ export class Tab1Page {
   buttoncolor:string = "medium"
   orderButtonColor:String = "primary"
   matches:string[] = []
-  orders:Order[]
-  selectedOrder:Order
+  order:Order
+  actions: { id: number, command: string, reply: string }[] = [
+    { "id": 0, "command": "accept order", "reply":"accepting order"},
+    { "id": 1, "command": "pickup order", "reply":"picking up order" },
+    { "id": 2, "command": "complete order", "reply":"completing order" },
+    { "id": 3, "command": "add comment", "reply":"adding comment"}
+  ];
+  
   options = {
     language:"en-US",
     matches:5,
@@ -26,7 +33,8 @@ export class Tab1Page {
     showPopup:false,  // Android only
     showPartial:false 
   }
-  constructor(private zone:NgZone, private orderService:OrderService, private speechRecognition: SpeechRecognition) {}
+  
+  constructor(private zone:NgZone, private orderService:OrderService, private speechRecognition: SpeechRecognition, private tts: TextToSpeech) {}
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
@@ -45,16 +53,57 @@ export class Tab1Page {
 
     this.speechRecognition.requestPermission()
     .then(() =>  {
+
       this.recording = true
       this.buttoncolor = "danger"
       this.speechRecognition.startListening(this.options).subscribe(
+       //valid speech recognized
         (matches) => {
           this.zone.run(()=>{
             this.recording = false
-            this.buttoncolor = "medium"
-            this.matches = matches
-          })
-       },
+            this.buttoncolor = "medium"    
+            //find the matching action from list of actions
+               let action = this.actions.find(action => {
+                 return matches.indexOf(action["command"]) !== -1;
+               })
+                if (action) {
+                  //There is a matching action
+                   this.tts.speak(action["reply"]).then(() => {
+
+                     switch(action["id"]) { 
+                       case 0: {
+                           this.selectOrder(this.order)
+                           break
+                       }
+                       case 1: {
+                           this.pickUpOrder(this.order)
+                           break
+                       }
+                       case 2: {                      
+                           break
+                       }
+                       case 3: {                      
+                           break
+                       }
+                       default: {                      
+                           break
+                       }
+                     }
+    
+                  })
+                } else {
+                     //There is no matching action
+                    this.tts.speak("No Action found, Can you repeat")
+                   .then(() => {
+                     //trigger this function again to do all over again
+                    this.voiceCommand()
+                })
+             }
+   
+         }
+        )
+      },
+      //no valid speech recognized
        (onerror) => { 
         this.zone.run(()=>{
           console.log('error:', onerror) 
@@ -69,13 +118,10 @@ export class Tab1Page {
         this.buttoncolor = "medium"
        }
       )
-    },
-    () => console.log('Permission Denied')
-  )
+    })
   })
-  }
- 
-  setButtonColor(order) {
+}
+    setButtonColor(order) {
     if (order.status == "accepted") {
       this.orderButtonColor = "success"
     } else if (order.status == "picked") {
@@ -85,9 +131,10 @@ export class Tab1Page {
     }
   }
 
-  getOrders() {
+    getOrders() {
      this.orderService.getOrders().subscribe((data)=> {
-      this.orders = data
+      this.order = data[0]
+      this.setButtonColor(this.order)
      })
     }
 
@@ -100,12 +147,10 @@ export class Tab1Page {
         this.setButtonColor(order)
       }           
     }
-
     
     pickUpOrder(order) {
       order.status = "picked"
       this.setButtonColor(order)
     }
-
     
 }
