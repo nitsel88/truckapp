@@ -32,7 +32,7 @@
       </ion-card-header>
       <ion-card-content>
            <ion-item-group >
-              <ion-button  *ngIf="order.status != 'delivered'" expand="full" [color]="orderButtonColor"  fill="solid" tappable (click)="selectOrder(order)">
+              <ion-button  *ngIf="orderInProgress()" expand="full" [color]="orderButtonColor"  fill="solid" tappable (click)="selectOrder(order)">
                   <ion-ripple-effect></ion-ripple-effect>
                    {{order.orderDesc}} | {{order.pickUpDest.area}} => {{order.dropDest.area}}
               </ion-button>  

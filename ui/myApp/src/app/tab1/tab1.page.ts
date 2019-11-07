@@ -20,9 +20,9 @@ export class Tab1Page {
   matches:string[] = []
   order:Order
   actions: { id: number, command: string, reply: string }[] = [
-    { "id": 0, "command": "accept order", "reply":"accepting order"},
-    { "id": 1, "command": "pickup order", "reply":"picking up order" },
-    { "id": 2, "command": "complete order", "reply":"completing order" },
+    { "id": 0, "command": "accept order", "reply":"okay, accepting order"},
+    { "id": 1, "command": "pickup order", "reply":"okay, picking up order" },
+    { "id": 2, "command": "complete order", "reply":"sure, Marking the order as delivered" },
     { "id": 3, "command": "add comment", "reply":"adding comment"}
   ];
   
@@ -68,7 +68,8 @@ export class Tab1Page {
                })
                 if (action) {
                   //There is a matching action
-                   this.tts.speak(action["reply"]).then(() => {
+                   let speakObj = {text: action["reply"], locale: 'en-US', rate: 0.75}
+                   this.tts.speak(speakObj).then(() => {
 
                      switch(action["id"]) { 
                        case 0: {
@@ -79,7 +80,8 @@ export class Tab1Page {
                            this.pickUpOrder(this.order)
                            break
                        }
-                       case 2: {                      
+                       case 2: {   
+                          this.completeOrder(this.order)                   
                            break
                        }
                        case 3: {                      
@@ -93,7 +95,7 @@ export class Tab1Page {
                   })
                 } else {
                      //There is no matching action
-                    this.tts.speak("No Action found, Can you repeat")
+                    this.tts.speak({text: 'I am sorry, i didnt understand that, Can you repeat', locale: 'en-US', rate: 0.75})
                    .then(() => {
                      //trigger this function again to do all over again
                     this.voiceCommand()
@@ -109,8 +111,12 @@ export class Tab1Page {
           console.log('error:', onerror) 
           this.recording = false
           this.buttoncolor = "medium"
-          this.matches.length = 0
-          this.matches.push("Talk Again - not proper") 
+           //There is no matching action
+           this.tts.speak({text: 'I am sorry, i didnt understand that, Can you repeat', locale: 'en-US', rate: 0.75})
+           .then(() => {
+           //trigger this function again to do all over again
+            this.voiceCommand()
+          })
         })
        },
        () => {
@@ -120,6 +126,15 @@ export class Tab1Page {
       )
     })
   })
+}
+
+
+orderInProgress() {
+  if (this.order && this.order.status != "delivered") {
+    return true
+  } else {
+    return false
+  }
 }
     setButtonColor(order) {
     if (order.status == "accepted") {
@@ -152,5 +167,12 @@ export class Tab1Page {
       order.status = "picked"
       this.setButtonColor(order)
     }
+
+        
+    completeOrder(order) {
+      order.status = "delivered"
+    }
+
+
     
 }
