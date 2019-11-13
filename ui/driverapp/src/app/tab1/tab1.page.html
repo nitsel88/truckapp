@@ -8,12 +8,6 @@
             </ion-title>       
     </ion-item>
     </ion-col>
-    <ion-col >
-      <ion-item>
-          <ion-label>Dark mode</ion-label>
-          <ion-toggle [(ngModel)]="darkmode" slot="start" name="darkmode" color="medium"></ion-toggle>
-      </ion-item>
-    </ion-col>
   </ion-row>
   <ion-row>
       <ion-col >
@@ -32,7 +26,7 @@
       </ion-card-header>
       <ion-card-content>
            <ion-item-group >
-              <ion-button  *ngIf="orderInProgress()" expand="full" [color]="orderButtonColor"  fill="solid" tappable (click)="selectOrder(order)">
+              <ion-button  *ngIf="orderInProgress()" expand="full" [color]="orderButtonColor"  fill="solid" tappable >
                   <ion-ripple-effect></ion-ripple-effect>
                    {{order.orderDesc}} | {{order.pickUpDest.area}} => {{order.dropDest.area}}
               </ion-button>  

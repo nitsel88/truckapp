@@ -1,0 +1,80 @@
+<form [formGroup]="myForm" (ngSubmit)="onSubmit()" >
+    <div formGroupName="order">
+        <div class="row">
+          <div class="card col-sm-5">
+            <h4 class="card-title">Pickup details</h4>
+            <div class="card-body">
+             <div class="row form-group">
+                <label for="pickupcity" class="col-form-label"><b>City:</b></label>
+                <input type="text" class="form-control" id="pickupcity" name="pickupcity" formControlName="pickupcity" >
+             </div>
+             <div class="row form-group">
+                <label for="pickuparea" class="col-form-label"><b>Area:</b></label>
+                <input type="text" class="form-control" id="pickuparea" name="pickuparea" formControlName="pickuparea" required>
+            </div>
+
+            </div>    
+          </div>
+          <div class="col-sm-1"></div>
+          <br>
+          <div class="card col-sm-5">
+           <h4 class="card-title">Drop details</h4>
+           <div class="card-body">
+              <div class="row form-group">
+                 <label for="dropcity" class="col-form-label"><b>City:</b></label>
+                 <input type="text" class="form-control" id="dropcity" name="dropcity" formControlName="dropcity" required>
+              </div>
+              <div class="row form-group">
+                 <label for="droparea" class="col-form-label"><b>Area:</b></label>
+                 <input type="text" class="form-control" id="droparea" name="droparea" formControlName="droparea" required>
+             </div>
+
+             </div>    
+          </div>              
+        </div>
+        <br>
+        <div class="row">
+            <div class="card col-sm-5">
+              <h4 class="card-title">Package dimensions</h4>
+              <div class="card-body">
+               <div class="row form-group">
+                  <label for="packageweight" class="col-form-label"><b>Weight (Kg):</b></label>
+                  <input type="number" class="form-control" id="packageweight" name="packageweight" formControlName="packageweight" required>
+               </div>
+               <div class="row form-group">
+                  <label for="packageheight" class="col-form-label"><b>Height (cms):</b></label>
+                  <input type="number" class="form-control" id="packageheight" name="packageheight" formControlName="packageheight" required>
+              </div>
+              <div class="row form-group">
+                  <label for="packagewidth" class="col-form-label"><b>Width (cms):</b></label>
+                  <input type="number" class="form-control" id="packagewidth" name="packagewidth" formControlName="packagewidth" required>
+              </div>
+              <div class="row form-group">
+                  <label for="packagelength" class="col-form-label"><b>Length (cms):</b></label>
+                  <input type="number" class="form-control" id="packagelength" name="packagelength" formControlName="packagelength" required>
+              </div>
+              </div>    
+            </div>
+            <div class="col-sm-1"></div>
+            <br>
+            <div class="card col-sm-5">
+             <h4 class="card-title">Other details</h4>
+             <div class="card-body">
+                <div class="row form-group">
+                   <label for="orderdesc" class="col-form-label"><b>Description:</b></label>
+                   <input style="height:200px" type="text" class="form-control" id="orderdesc" name="orderdesc" formControlName="orderdesc" required >
+                </div>
+                <div class="row form-group">
+                   <label for="ordercomments" class="col-form-label"><b>Comments:</b></label>
+                   <input type="text" class="form-control" id="ordercomments" name="ordercomments" formControlName="ordercomments">
+               </div>
+               <br>
+               <div class="row">
+               <button role='button' type="submit" [disabled]="!myForm.valid" class="fixed-bottom btn btn-lg btn-block btn-primary">Create Order</button>
+               </div> 
+              </div>   
+            </div>              
+          </div>
+     
+      </div>
+    </form>

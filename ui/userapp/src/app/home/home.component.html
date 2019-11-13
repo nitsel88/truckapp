@@ -1,9 +1,40 @@
 ﻿<h1>Hi {{currentUser.firstName}}!</h1>
-<p>You're logged in with Angular 8!!</p>
-<h3>All registered users:</h3>
-<ul>
-    <li *ngFor="let user of users">
-        {{user.username}} ({{user.firstName}} {{user.lastName}})
-        - <a (click)="deleteUser(user.id)" class="text-danger">Delete</a>
-    </li>
-</ul>
+<p>Welcome to truckapp.com</p>
+
+<div class="row">
+    <button routerLink="/createorder" type = "button" class = "btn btn-primary">
+        <span class = "glyphicon glyphicon-plus"></span>
+        Create Order
+     </button>
+</div>
+
+<br>
+
+<div class="row">
+        <div class="table-responsive-md">
+  <table class="table-hover table-bordered">
+      <thead>
+        <tr class="table-active">
+          <th style="width:10%">order ID</th>
+          <th style="width:10%">order Status</th>
+          <th style="width:10%">Driver</th>
+          <th style="width:10%">order Description</th>
+          <th style="width:10%">pickup city</th>
+          <th style="width:10%">Drop city</th>
+          <th style="width:10%">Comments</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let order of orders">
+        <tr>
+          <td>{{order.orderId}}</td>
+          <td>{{order.status}}</td>
+          <td>{{order.driverId}}</td>
+          <td>{{order.orderDesc}}</td>
+          <td>{{order.pickUpDest.city}}</td>
+          <td>{{order.dropDest.city}}</td>
+          <td>{{order.comments[0].desc}}</td>
+        </tr>      
+      </tbody>
+    </table>
+  </div>
+</div>

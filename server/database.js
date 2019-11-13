@@ -1,6 +1,7 @@
 // Retrieve
 const assert = require("assert");
 var MongoClient = require('mongodb').MongoClient
+var ObjectID  = require('mongodb').ObjectID
 
 let dbInstance
 
@@ -12,7 +13,7 @@ function initDb(callback) {
    }
 
 // Connect to the db
-MongoClient.connect("mongodb://localhost:27017", { useNewUrlParser: true,  useUnifiedTopology: true },  function(err, client) {
+MongoClient.connect("mongodb://10.128.0.3:80", { useNewUrlParser: true,  useUnifiedTopology: true },  function(err, client) {
     if (err) throw err;
     
     db = client.db("truckdb");
@@ -30,13 +31,40 @@ function getDb() {
     return dbInstance;
 }
 
+//get maximum project id
+function getMaxOrderId() { 
+  return new Promise((resolve, reject)=> { 
+  db = getDb() 
+    db.collection("orders").find({}).sort({ "orderId": -1 }).limit(1).toArray(function(err, maxproj) {
+       if (err) {
+         reject (err)
+       }
+       
+       if (0 < maxproj.length) { 
+          resolve(maxproj[0].projectId)
+       } else {
+          resolve (0)
+       }
+    })   
+  })     
+ }
+
 //insert order details into orders collection
 function insertOrders (ordDtl, callback) {
+  
+  getMaxOrderId().then((maxOrdId)=> {
+    if (!maxOrdId) {
+      maxOrdId = 0
+    }
+    ordDtl.orderId = parseInt(maxOrdId) + 1
   db = getDb()
   db.collection("orders").insertOne(ordDtl, function(err, res) {
   return callback(err)
  });
+})
 }
+
+
 
 //get all the orders from orders collection
 function getAllOrders () {
@@ -83,15 +111,33 @@ db.collection("orders").find({driverId: driverid}).toArray(function(err, docs) {
 })
 }
 
-//delete orders for a user
-function deleteOrder(userid) {
+function updateOrder (order) {
+
   return new Promise((resolve, reject)=> {
     db = getDb()
-    db.collection("orders").deleteOne({userId: userid}, (err) => {
+    console.log("update request received:"+ JSON.stringify(order))
+    let _id = order._id;
+    delete order._id;     
+    db.collection("orders").updateOne({"_id": ObjectID(_id)}, {$set: order}).then(result => {
+      const { matchedCount, modifiedCount } = result;
+      if(matchedCount && modifiedCount) {
+          console.log("order updated: " + order.orderId);
+          resolve({orderId: order.orderId })
+       } 
+     }).catch(err => {
+         reject (err)
+     })
+  })
+}
+//delete all orders
+function deleteAllOrders() {
+  return new Promise((resolve, reject)=> {
+    db = getDb()
+    db.collection("orders").deleteMany({}, (err) => {
         if (err) { 
           reject (err)
         }
-        resolve({status: deleted})
+        resolve({status: "deleted"})
       })
   }) 
 }
@@ -158,13 +204,17 @@ resolve(drivers);
 })
 }
 
+
+
 module.exports = {
     getDb,
     initDb,
     insertOrders,
+    updateOrder,
+    getMaxOrderId,
     getAllOrders,
     getOrdersForUser,
-    deleteOrder,
+    deleteAllOrders,
     insertDriver,
     getOrdersForDriver,
     getDrivers,
